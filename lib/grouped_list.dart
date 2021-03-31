@@ -6,11 +6,12 @@ import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 /// A groupable list of widgets similar to [ListView], execpt that the
 /// items can be sectioned into groups.
 ///
-/// See [ListView.builder]
+/// See [GridView.builder]
 class GroupedListView<T, E> extends StatefulWidget {
   /// Items of which [itemBuilder] or [indexedItemBuilder] produce the list.
   final List<T> elements;
@@ -268,26 +269,32 @@ class _GroupedListViewState<T, E> extends State<GroupedListView<T, E>> {
       key: _key,
       alignment: Alignment.topCenter,
       children: <Widget>[
-        ListView.builder(
-          key: widget.key,
+        StaggeredGridView.countBuilder(
+          staggeredTileBuilder: (int index) =>
+              new StaggeredTile.count(2, index.isEven ? 3 : 1.5),
+          mainAxisSpacing: 2.0,
+          crossAxisSpacing: 2.0,
+          // key: widget.key,
           scrollDirection: widget.scrollDirection,
           controller: _controller,
-          primary: widget.primary,
-          physics: widget.physics,
+          // primary: widget.primary,
+          physics: NeverScrollableScrollPhysics(),
           shrinkWrap: widget.shrinkWrap,
-          padding: widget.padding,
+          // padding:,
           reverse: widget.reverse,
-          clipBehavior: widget.clipBehavior,
-          dragStartBehavior: widget.dragStartBehavior,
-          itemExtent: widget.itemExtent,
-          restorationId: widget.restorationId,
-          keyboardDismissBehavior: widget.keyboardDismissBehavior,
-          semanticChildCount: widget.semanticChildCount,
+          crossAxisCount: 4,
+
+          // clipBehavior: widget.clipBehavior,
+          // dragStartBehavior: widget.dragStartBehavior,
+          // itemExtent: widget.itemExtent,
+          // restorationId: widget.restorationId,
+          // keyboardDismissBehavior: widget.keyboardDismissBehavior,
+          // semanticChildCount: widget.semanticChildCount,
           itemCount: _sortedElements.length * 2,
           addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
           addRepaintBoundaries: widget.addRepaintBoundaries,
-          addSemanticIndexes: widget.addSemanticIndexes,
-          cacheExtent: widget.cacheExtent,
+          // addSemanticIndexes: widget.addSemanticIndexes,
+          // cacheExtent: widget.cacheExtent,
           itemBuilder: (context, index) {
             var actualIndex = index ~/ 2;
             if (index == hiddenIndex) {
